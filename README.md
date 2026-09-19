@@ -1,2 +1,2 @@
-# V.-inaequalis-pangenome-
+# V.-inaequalis-pangenome
 This analysis was used in 
