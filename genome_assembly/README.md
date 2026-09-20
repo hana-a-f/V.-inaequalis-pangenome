@@ -1,6 +1,6 @@
 # Genome Assembly
 
-This step takes raw PacBio HiFi reads for each *Venturia inaequalis* isolate and produces cleaned, haplotig-purged nuclear assemblies ready for downstream analysis (repeat masking, annotation, pangenome build).
+This step takes raw PacBio HiFi reads for each *Venturia inaequalis* isolate and produces nuclear assemblies.
 
 ## Overview of the pipeline
 
