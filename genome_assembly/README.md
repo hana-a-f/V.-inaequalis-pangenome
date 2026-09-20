@@ -40,7 +40,6 @@ This step takes raw PacBio HiFi reads for each *Venturia inaequalis* isolate and
 | `jellyfish.sh` | k-mer counting + histogram for each sample (input for genome-size estimation) |
 | `hifiasm.sh` | Loop over all `VI_*.fastq` files and assemble each with hifiasm |
 | `run_all_mitohifi.sh` | Run MitoHiFi in contigs mode (`-c`) on every hifiasm assembly |
-| `contigs_ids.txt` | Curated list of mitochondrial contig IDs to filter out |
 | `README.md` | This file |
 
 ---
