@@ -1,4 +1,4 @@
- Repeat Modeling & Masking
+#Repeat Modeling & Masking
 
 This folder documents the repeat-modeling and soft-masking pipeline. Each assembly gets its own *de novo* repeat library from **RepeatModeler**, which is then used by **RepeatMasker** to soft-mask that assembly (repeats lower-cased in place with `-xsmall`, so downstream tools can still see the sequence but distinguish it as repetitive).
 
