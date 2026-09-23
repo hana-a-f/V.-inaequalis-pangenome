@@ -20,29 +20,6 @@ Key flags used:
 - **RepeatModeler**: `-LTRStruct` (adds structural LTR-retrotransposon discovery)
 - **RepeatMasker**: `-a -gff -xsmall` (write `.align` file, write GFF3, **soft-mask** with lowercase rather than replace with N)
 
-## Samples (17 total)
-
-VI_18_043 was originally masked but was later dropped from the analysis, so it is not listed here.
-
-| Isolate | Input assembly (round 1) |
-| --- | --- |
-| VI_19_031 | `VI_19_031_CHR_final.fa` (chromosome-level, from `hic_assembly/`) |
-| VI_1771_2 | `VI_1771_2_hifi.asm.bp.p_ctg.nuc.purge.fasta` |
-| VI_1797_2 | `VI_1797_2_hifi.asm.bp.p_ctg.nuc.purge.fasta` |
-| VI_1797_9 | `VI_1797_9_hifi.asm.bp.p_ctg.nuc.purge.fasta` |
-| VI_18_019 | `VI_18_019_hifi.asm.bp.p_ctg.nuc.purge.fasta` |
-| VI_18_030 | `VI_18_030_hifi.asm.bp.p_ctg.nuc.purge.fasta` |
-| VI_18_033 | `VI_18_033_curated.fasta` |
-| VI_18_037 | `VI_18_037_hifi.asm.bp.p_ctg.nuc.purge.fasta` |
-| VI_19_004 | `VI_19_004_hifi.asm.bp.p_ctg.nuc.purge.fasta` |
-| VI_19_011 | `VI_19_011_curated.fasta` |
-| VI_EU104 | `VI_EU104_hifi.asm.bp.p_ctg.nuc.purge.fasta` |
-| VI_EU160 | `VI_EU160_hifi.asm.bp.p_ctg.nuc.purge.fasta` |
-| VI_EU301 | `VI_EU301_hifi.asm.bp.p_ctg.nuc.purge.fasta` |
-| VI_EU302 | `VI_EU302_hifi.asm.bp.p_ctg.nuc.purge.fasta` |
-| VI_EU413 | `VI_EU413_hifi.asm.bp.p_ctg.nuc.purge.fasta` |
-| VI_EUNL19 | `VI_EUNL19_hifi.asm.bp.p_ctg.nuc.purge.fasta` |
-| VI_EUNL24 | `VI_EUNL24_hifi.asm.bp.p_ctg.nuc.purge.fasta` |
 
 ## Files in this folder
 
@@ -167,11 +144,9 @@ parallel -j 1 < mask.txt
 ### Reruns
 
 - **VI_19_031** was re-masked using `VI_19_031.chr.ref.nuc.fasta` (the canonical PanSeq-header version) to keep GFF3 coordinates in sync with the reference used downstream.
-- **VI_EUB04** was masked using VI_EU302's library (question: is this the correct pairing? Flagged below).
 
 ```bash
 singularity run --bind $PWD --pwd $PWD ./tetools.sif RepeatMasker -a -gff -xsmall -pa 10 -lib VI_19_031_consensi.fa            VI_19_031.chr.ref.nuc.fasta      > VI_19_031_repeatmasker.log  2>&1
-singularity run --bind $PWD --pwd $PWD ./tetools.sif RepeatMasker -a -gff -xsmall -pa 10 -lib VI_EU302_consensi.fa.classified  VI_EUB04_panseq.fasta.masked     > VI_EUB04_repeatmasker.log   2>&1
 ```
 
 ## Step 6 — RepeatMasker (round 2 — on scaffolded PanSeq assemblies)
