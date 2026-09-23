@@ -1,38 +1,17 @@
 # RagTag Scaffolding
 
-This folder documents the reference-guided scaffolding of the 16 contig-level assemblies against the chromosome-level VI_19_031 reference. The output is a set of pseudochromosome-level assemblies for every isolate, with headers in the PanSeq format (`SAMPLE#1#chrNN`) required for downstream pangenome graph construction.
-
-## Pipeline overview
-
-1. **Preprocess**: standardise assembly filenames + fix NCBI-style headers on the pre-screened samples.
-2. **Scaffold** each isolate against VI_19_031 using `ragtag.py scaffold` (nucmer aligner, in parallel).
-3. **Handle special cases**:
-   - VI_18_037 — one oversized contig required breaking.
-   - VI_EUNL24 & VI_19_011 — misassemblies flagged by `ragtag.py correct`; manual contig splits, then re-scaffolded.
-   - VI_EU160 — nucmer alignment failed; used minimap2 aligner instead.
-4. **Rename** scaffolded FASTAs to PanSeq format (`{isolate}#1#chrNN` / `{isolate}#1#ptg...`).
-5. **QC** every scaffolded assembly (seqkit stats, chromosome sizes, telomeres, BUSCO, Merqury).
+This folder documents the reference-guided scaffolding of the 16 contig-level assemblies against the chromosome-level VI_19_031 reference. The output is a set of pseudochromosome-level assemblies for every isolate, with headers in the PanSeq format.
 
 ## Inputs
 
-Every input assembly must already be:
-- **Purged** (purge_haplotigs for 16 samples, purge_dups for VI_19_031 — see `genome_assembly/` and `hic_assembly/`)
+Every input assembly is already:
+- **Purged** (purge_haplotigs for 16 samples)
 - **Mitochondrial-DNA-removed**
 - **Repeat-masked**
 - Named consistently: `{isolate}.nuc.purge.masked`
 
 Reference: `VI_19_031.chr.ref.nuc.fasta.masked` (from `hic_assembly/`).
 
-## Samples & special handling
-
-| Isolate | Aligner | Extra step |
-| --- | --- | --- |
-| VI_1771_2, VI_1797_2, VI_1797_9, VI_18_019, VI_18_030, VI_18_033, VI_18_043, VI_19_004, VI_EU104, VI_EU301, VI_EU302, VI_EU413, VI_EUNL19 | nucmer | — |
-| VI_18_037 | nucmer | Oversized contig required breaking; re-scaffolded |
-| VI_EUNL24 | nucmer | `ragtag correct` flagged misassembly at ptg000001l position 5,014,854 → manual split → re-scaffolded |
-| VI_19_011 | nucmer | `ragtag correct` flagged misassembly at ptg000002l → manual split → re-scaffolded |
-| VI_EU160 | **minimap2** | nucmer alignment failed → switched aligner |
-| VI_19_031 | (reference) | Not scaffolded; used as reference. Copied directly into PanSeq set. |
 
 ## Tools used
 
@@ -53,7 +32,6 @@ Reference: `VI_19_031.chr.ref.nuc.fasta.masked` (from `hic_assembly/`).
 | --- | --- |
 | `README.md` | This file |
 | `ragtag.cmds.txt` | Auto-generated RagTag scaffold command list |
-| `telomere_scan_all.py` | Genome-wide telomere scan (needs to be added — see open items) |
 
 ---
 
@@ -66,14 +44,14 @@ export PATH=/programs/seqkit-0.15.0:$PATH
 source /programs/miniconda3/bin/activate ragtag
 ```
 
-Rename every masked assembly to a consistent `{isolate}.nuc.purge.masked` filename (dry-run — the loop below prints the intended renames, then you `mv` them):
+Rename every masked assembly to a consistent `{isolate}.nuc.purge.masked` filename (ran before to make sure works before adding in echo):
 
 ```bash
 for f in *.fasta.masked *.fa.masked; do
     [[ "$f" == "VI_19_031.chr.ref.nuc.fasta.masked" ]] && continue
     iso=$(echo "$f" | sed -E 's/(_hifi\.asm\.bp\.p_ctg\.nuc\.purge|_curated|\.2\.0)?(\.fasta|\.fa)?\.masked//')
     new="${iso}.nuc.purge.masked"
-    echo "$f → $new"
+    mv -n "$f" "$new" && echo "renamed: $f → $new"
 done
 ```
 
@@ -157,9 +135,8 @@ mkdir delta
 cp *.delta delta
 ```
 
-## Step 3 — Special case: VI_18_037 (oversized contig)
+## Step 3 — Special case: VI_18_037 (misassembly)
 
-One contig was too large and needed to be broken before scaffolding. After manual breaking (see notes), re-scaffolded:
 
 ```bash
 ragtag.py scaffold \
@@ -275,22 +252,7 @@ ragtag.py scaffold \
 for f in *; do mv "$f" "VI_19_011_${f}"; done
 ```
 
-## Step 6 — Special case: VI_EU160 (minimap2 aligner)
-
-nucmer alignment failed for VI_EU160; switched aligner to minimap2:
-
-```bash
-ragtag.py scaffold \
-  --aligner minimap2 \
-  -f 5000 -u \
-  -o VI_EU160.ragtag.minimap \
-  VI_19_031.chr.ref.nuc.fasta.masked \
-  VI_EU160.nuc.purge.masked
-
-for f in *; do mv "$f" "VI_EU160_${f}"; done
-```
-
-## Step 7 — Rename scaffolded FASTAs to PanSeq format
+## Step 6 — Rename scaffolded FASTAs to PanSeq format
 
 Only run this **after** checking the `.delta` files. Replaces the VI_19_031 prefix inherited from the reference, strips `_RagTag`, and adds the PanSeq isolate tag:
 
@@ -318,7 +280,7 @@ done
 echo "All renamed and pangenome-formatted FASTAs created."
 ```
 
-## Step 8 — QC
+## Step 7 — QC
 
 ### Chromosome sizes
 
@@ -341,12 +303,6 @@ seqkit stats -a *_panseq.fasta > all_seqstats.txt
 seqkit stats -a *.masked       > all_seqstats.before.ragtag.txt
 ```
 
-### Telomeres
-
-```bash
-# See telomere_scan_all.py — genome-wide telomere scan across all *_panseq.fasta
-python telomere_scan_all.py
-```
 
 ### BUSCO
 
