@@ -28,7 +28,6 @@ This folder documents per-orthogroup evolutionary analyses starting from OrthoFi
 | MAFFT | 7.520 (`/programs/mafft/bin`) — Katoh & Standley, 2013 |
 | KaKs_Calculator | 2.0 — https://github.com/kullrich/kakscalculator2 — Wang et al., 2010 |
 | EggLib | 3.6.0 — Siol et al., 2022 |
-| topGO | Alexa & Rahnenführer, 2024 (R Bioconductor) |
 | Biopython | For CDS extraction and AXT conversion |
 
 ## Files in this folder
