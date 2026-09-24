@@ -1,2 +1,3 @@
-# V.-inaequalis pangeome
-This analysis was used in 
+# *V. inaequalis* pangenome
+
+This analysis was used in ...
