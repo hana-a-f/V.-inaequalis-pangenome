@@ -1,0 +1,42 @@
+
+##RUNNING GENESPACE
+
+singularity exec \
+  --bind $PWD \
+  --pwd $PWD \
+  james-s-santangelo_genespace_genespace.sif \
+  Rscript Genespace.R
+
+
+library(GENESPACE)
+path2orthofinder = "/programs/OrthoFinder-2.3.8_source/orthofinder"
+path2mcscanx = "/opt/MCScanX-master"
+genomes2run <- c("VI_1771_2","VI_1797_2","VI_1797_9","VI_18_019","VI_18_030","VI_18_033","VI_18_037","VI_19_004","VI_19_011",
+"VI_19_031","VI_EU104,"VI_EU160","VI_EU301","VI_EU302","VI_EU413","VI_EUB04","VI_EUNL19","VI_EUNL24")
+gpar <- init_genespace(
+  wd = "/workdir/hf332/GENESPACE",
+  path2mcscanx = path2mcscanx)
+
+
+library(GENESPACE)
+gpar <- init_genespace(...,wd = "/workdir/hf332/GENESPACE")
+
+query_pangenes(
+  gpar,
+  bed = NULL,
+  refGenome = "VI_19_031",
+  transform = TRUE,
+  showArrayMem = TRUE,
+  showNSOrtho = TRUE,
+  maxMem2Show = Inf,
+  showUnPlacedPgs = TRUE
+)
+
+singularity exec \
+  --bind $PWD \
+  --pwd $PWD \
+  james-s-santangelo_genespace_genespace.sif \
+  Rscript query.R
+
+
+
