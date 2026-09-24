@@ -42,8 +42,8 @@ This folder documents how *V. inaequalis* secreted proteins (from `effector_pred
 
 | File | Purpose |
 | --- | --- |
-| `families/` | Per-family FASTA (from Rocafort et al. 2023) |
-| `avr6.fa` | AvrRvi6 protein query for Step 8 (Sannier et al. 2025|
+| `families/` | Per-family FASTA made from (from Rocafort et al. 2023) |
+| `avr6.fa` | AvrRvi6 protein query for Step 8 (Sannier et al. 2025)|
 | `Venturia_all_secretome.fa` | Concatenated secretome from all 18 isolates |
 
 ---
