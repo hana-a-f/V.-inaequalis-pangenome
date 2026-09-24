@@ -40,7 +40,7 @@ This folder documents per-orthogroup evolutionary analyses starting from OrthoFi
 | `mafft_align.sh` | Loop MAFFT over every orthogroup FASTA |
 | `mafft_to_axt.py` | Convert MAFFT alignments to per-pair AXT for KaKs_Calculator |
 | `run_kaks.sh` | Loop KaKs_Calculator over every AXT file |
-| `compute_pi_egglib.py` | Compute per-orthogroup π with EggLib (**this is the one reported**) |
+| `compute_pi_egglib.py` | Compute per-orthogroup π with EggLib 
 
 ---
 
