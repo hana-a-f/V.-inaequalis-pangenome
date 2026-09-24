@@ -42,7 +42,6 @@ VI_19_031 is the reference. Every other isolate is a query haplotype.
 | --- | --- |
 | cactus-pangenome (Minigraph-Cactus) | `quay.io/comparative-genomics-toolkit/cactus:latest` (Docker) |
 | Docker wrapper | `docker1` (Cornell BioHPC rootless docker) |
-| odgi | conda env `odgi` (`/programs/miniconda3/bin/activate odgi`) |
 | panacus | 0.2.3 (`/programs/panacus-0.2.3/bin`) |
 | panacus-visualize | Python plotting script bundled with panacus |
 
